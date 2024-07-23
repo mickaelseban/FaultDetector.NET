@@ -1,2 +1,2 @@
-# FaultDetector.Net
+# FaultDetector.NET
 Spectrum Based Fault Localization
