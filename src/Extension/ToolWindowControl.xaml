@@ -1,0 +1,443 @@
+﻿<UserControl x:Class="FaultDetectorDotNet.Extension.ToolWindowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+             Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}"
+             Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="ToolWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <WrapPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+            <WrapPanel 
+                x:Name="FaultLocalizationTechniquesPanel"
+                Orientation="Horizontal" >
+                <StackPanel x:Name="DefaultFaultLocalizationTechniquesPanel" Orientation="Horizontal" Margin="0, 5, 0, 5">
+                    <Label Content="Techniques:"
+                     Style="{DynamicResource {x:Static vsshell:VsResourceKeys.LabelEnvironmentBoldStyleKey}}"
+                     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
+                     Padding="5,5, 10, 5"
+                     VerticalAlignment="Center" />
+                    <CheckBox x:Name="CheckBoxTarantula"
+                        Content="Tarantula"
+                        Tag="Tarantula"
+                        IsEnabled="False"
+                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Margin="5,0,15,0"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                    <CheckBox x:Name="CheckBoxOchiai"
+                        Content="Ochiai"
+                        Tag="Ochiai"
+                        IsEnabled="False"
+                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Margin="5,0,15,0"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                    <CheckBox x:Name="CheckBoxJaccard"
+                        Content="Jaccard"
+                        Tag="Jaccard"
+                        IsEnabled="False"
+                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Margin="5,0,15,0"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                    <CheckBox x:Name="CheckBoxDStar"
+                        Content="DStar"
+                        Tag="DStar"
+                        IsEnabled="False"
+                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Margin="5,0,15,0"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                    <CheckBox x:Name="CheckBoxKulczynski"
+                        Content="Kulczynski"
+                        Tag="Kulczynski"
+                        IsEnabled="False"
+                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Margin="5,0,15,0"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                    <CheckBox x:Name="CheckBoxRogersTanimoto"
+                        Content="Rogers Tanimoto"
+                        Tag="RogersTanimoto"
+                        IsEnabled="False"
+                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Margin="5,0,15,0"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                </StackPanel>
+                <StackPanel x:Name="NormalizatedFaultLocalizationTechniquePanel" 
+                      Orientation="Horizontal"
+                      Margin="0, 5, 0, 5">
+                    <CheckBox x:Name="CheckNormalizatedTechnique"
+                        Content="Normalizated"
+                        Tag="NormalizatedTechnique"
+                        IsEnabled="False"
+                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                        Margin="5,0,15,0"
+                        VerticalAlignment="Center"
+                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                </StackPanel>
+            </WrapPanel>
+            
+            <StackPanel x:Name="SymmetryCoefficientPanel" Orientation="Horizontal" Margin="0, 5, 0, 5">
+                <Label Content="Symmetry Coefficients:"
+                       Style="{DynamicResource {x:Static vsshell:VsResourceKeys.LabelEnvironmentBoldStyleKey}}"
+                       Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
+                       Padding="5,5, 10, 5"
+                       VerticalAlignment="Center" />
+                <CheckBox x:Name="CheckBoxNone"
+                          Content="Default"
+                          Tag="Default"
+                          IsEnabled="True"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified01Coefficient"
+                          Content="Simplified 0.1"
+                          Tag="Simplified01"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified02Coefficient"
+                          Content="Simplified 0.2"
+                          Tag="Simplified02"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified03Coefficient"
+                          Content="Simplified 0.3"
+                          Tag="Simplified03"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified04Coefficient"
+                          Content="Simplified 0.4"
+                          Tag="Simplified04"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified05Coefficient"
+                          Content="Simplified 0.5"
+                          Tag="Simplified05"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified06Coefficient"
+                          Content="Simplified 0.6"
+                          Tag="Simplified06"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified07Coefficient"
+                          Content="Simplified 0.7"
+                          Tag="Simplified07"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified08Coefficient"
+                          Content="Simplified 0.8"
+                          Tag="Simplified08"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified09Coefficient"
+                          Content="Simplified 0.9"
+                          Tag="Simplified09"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxSimplified10Coefficient"
+                          Content="Simplified 1.0"
+                          Tag="Simplified10"
+                          IsEnabled="False"
+                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,0"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+            </StackPanel>
+        </WrapPanel>
+
+        <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"
+                   Margin="0, 5, 0, 10">
+            <ComboBox x:Name="TestProjectsComboBox" Width="150" Margin="5"
+                      Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ComboBoxStyleKey}}"
+                      IsEnabled="False" SelectionChanged="TestProjectsComboBox_SelectionChanged" />
+            <Button x:Name="RunButton" Content="Run" Click="RunButton_Click"
+                    Margin="5" IsEnabled="False"
+                    Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ButtonStyleKey}}" />
+            <Button x:Name="AbortScanButton"
+                    Click="AbortScan_Click"
+                    Visibility="Hidden"
+                    Width="11" Height="11"
+                    ToolTip="Abort Scan Process"
+                    Background="DarkRed" />
+        </WrapPanel>
+
+        <TabControl Grid.Row="2" Grid.Column="0"
+                    BorderThickness="0 , 1, 0,0"
+                    Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}"
+                    Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}">
+
+
+            <TabItem Header="Suspiciousness"
+                     Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogTabItemNavigationStyleKey}}">
+                <Grid Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <WrapPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Total:"
+                                   Style="{DynamicResource {x:Static vsshell:VsResourceKeys.LabelEnvironment90PercentFontSizeStyleKey}}"
+                                   Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
+                                   Padding="5,5, 0, 5"
+                                   VerticalAlignment="Center" />
+                            <Label Content="{Binding TotalCount}"
+                                   Style="{DynamicResource {x:Static vsshell:VsResourceKeys.LabelEnvironment90PercentFontSizeStyleKey}}"
+                                   Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
+                                   Padding="2,5, 5, 5"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Total With Score:"
+                                   Style="{DynamicResource {x:Static vsshell:VsResourceKeys.LabelEnvironment90PercentFontSizeStyleKey}}"
+                                   Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
+                                   Padding="5,5, 0, 5"
+                                   VerticalAlignment="Center" />
+                            <Label Content="{Binding TotalWithScoreCount}"
+                                   Style="{DynamicResource {x:Static vsshell:VsResourceKeys.LabelEnvironment90PercentFontSizeStyleKey}}"
+                                   Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
+                                   Padding="2,5, 5, 5"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox x:Name="ShowAllCheckBox"
+                                      Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}"
+                                      Checked="ShowAllCheckBox_Checked"
+                                      Unchecked="ShowAllCheckBox_Unchecked"
+                                      Margin="15,0,0,0"
+                                      VerticalAlignment="Center" />
+                            <Label Content="Show all Results"
+                                   Style="{DynamicResource {x:Static vsshell:VsResourceKeys.LabelEnvironment90PercentFontSizeStyleKey}}"
+                                   Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
+                                   VerticalAlignment="Center"
+                                   Margin="5,0,0,0" />
+                        </StackPanel>
+                    </WrapPanel>
+
+
+                    <TextBox x:Name="SearchTextBox" Grid.Row="0" Grid.Column="1" Width="200" Margin="5"
+                             TextChanged="SearchTextBox_TextChanged"
+                             IsEnabled="False"
+                             Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBoxStyleKey}}"
+                             Padding="2"
+                             HorizontalAlignment="Right" />
+
+                    <DataGrid x:Name="SuspiciousnessResultsListView"
+                              ItemsSource="{Binding SuspiciousnessResultItems}"
+                              AutoGenerateColumns="False"
+                              Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
+                              BorderThickness="0"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              IsReadOnly="True"
+                              MouseDoubleClick="MultiSelector_MouseDoubleClick">
+                        <DataGrid.Resources>
+                            <SolidColorBrush x:Key="CustomBlueBrush" Color="{DynamicResource CustomBlueColor}" />
+                            <Color x:Key="CustomBlueColor" R="0" G="0" B="90" A="255" />
+                            <Style TargetType="DataGrid">
+                                <Setter Property="GridLinesVisibility" Value="None" />
+                            </Style>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Foreground" Value="{StaticResource CustomBlueBrush}" />
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Technique" Binding="{Binding Technique}" Width="150" />
+                            <DataGridTextColumn Header="Symmetry Coefficient"
+                                                Binding="{Binding AdjustableSymmetryCoefficient}" Width="200" />
+                            <DataGridTextColumn Header="Assembly" Binding="{Binding Assembly}" Width="100" />
+                            <DataGridTextColumn Header="File" Binding="{Binding File}" Width="200" />
+                            <DataGridTextColumn Header="Class" Binding="{Binding Class}" Width="150" />
+                            <DataGridTextColumn Header="Method" Binding="{Binding Method}" Width="150" />
+                            <DataGridTextColumn Header="Line" Binding="{Binding Line}" Width="50" />
+                            <DataGridTextColumn Header="Score" Binding="{Binding Score}" Width="110" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Normalizated Suspiciousness"
+                     Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogTabItemNavigationStyleKey}}">
+                <Grid Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <DataGrid x:Name="NormalizatedSuspiciousnessResultsListView"
+                              ItemsSource="{Binding SuspiciousnessAggregatedResultItems}"
+                              AutoGenerateColumns="False"
+                              Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
+                              BorderThickness="0"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              IsReadOnly="True"
+                              MouseDoubleClick="MultiSelector_MouseDoubleClick">
+                        <DataGrid.Resources>
+                            <SolidColorBrush x:Key="CustomBlueBrush" Color="{DynamicResource CustomBlueColor}" />
+                            <Color x:Key="CustomBlueColor" R="0" G="0" B="90" A="255" />
+                            <Style TargetType="DataGrid">
+                                <Setter Property="GridLinesVisibility" Value="None" />
+                            </Style>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Foreground" Value="{StaticResource CustomBlueBrush}" />
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Assembly" Binding="{Binding Assembly}" Width="100" />
+                            <DataGridTextColumn Header="File" Binding="{Binding File}" Width="200" />
+                            <DataGridTextColumn Header="Class" Binding="{Binding Class}" Width="150" />
+                            <DataGridTextColumn Header="Method" Binding="{Binding Method}" Width="150" />
+                            <DataGridTextColumn Header="Line" Binding="{Binding Line}" Width="50" />
+                            <DataGridTextColumn Header="Score" Binding="{Binding Score}" Width="110" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Coverage Matrix"
+                     Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogTabItemNavigationStyleKey}}">
+                <Grid Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}">
+                    <DataGrid x:Name="CoverageDataGrid"
+                              ItemsSource="{Binding GridData}"
+                              MouseDoubleClick="MultiSelector_MouseDoubleClick"
+                              BorderThickness="0"
+                              AutoGenerateColumns="False"
+                              GridLinesVisibility="None"
+                              IsReadOnly="True"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch" />
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="Output Logs"
+                     Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogTabItemNavigationStyleKey}}">
+                <Grid
+                    Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center">
+                        <Button x:Name="ClearLogButton" Content="Clear Log" Click="ClearLogButton_Click"
+                                Margin="5" IsEnabled="False"
+                                Width="60" Height="5"
+                                HorizontalAlignment="Right"
+                                Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ButtonStyleKey}}" />
+                    </StackPanel>
+
+                    <TextBox x:Name="LogTextBox" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
+                             TextChanged="LogTextBox_TextChanged"
+                             IsReadOnly="True"
+                             VerticalScrollBarVisibility="Auto" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>
