@@ -14,6 +14,11 @@ namespace FaultDetectorDotNet.Tool
     {
         public static async Task<int> Main(string[] args)
         {
+            var testProjectFullPathArgument = new Argument<string>(
+                "test-project-full-path",
+                "The test project name"
+            );
+
             var verboseOption = new Option<bool>(
                 new[] { "--verbose", "-v" },
                 description: "Print logs to the console (true or false)",
@@ -24,17 +29,6 @@ namespace FaultDetectorDotNet.Tool
                 new[] { "--debug", "-d" },
                 description: "Enable or disable debug mode (true or false)",
                 getDefaultValue: () => false
-            );
-
-            var testProjectFullPathArgument = new Argument<string>(
-                "test-project-full-path",
-                "The test project name"
-            );
-
-            var dllPathOption = new Option<string>(
-                new[] { "--dll-path", "-dll" },
-                description: "The path to the project's DLL",
-                getDefaultValue: () => string.Empty
             );
 
             var exportPathOption = new Option<string>(
@@ -63,7 +57,6 @@ namespace FaultDetectorDotNet.Tool
             var rootCommand = new RootCommand
             {
                 testProjectFullPathArgument,
-                dllPathOption,
                 exportPathOption,
                 verboseOption,
                 debugOption,
@@ -84,7 +77,6 @@ namespace FaultDetectorDotNet.Tool
                     {
                         AttachDebugger();
                     }
-
 
                     var executionId = Guid.NewGuid().ToString();
                     using IProcessLogger processLogger = new ConsoleOutputLogger(verbose);

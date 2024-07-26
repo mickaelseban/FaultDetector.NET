@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace FaultDetectorDotNet.Core.Logger
 {
@@ -19,6 +20,7 @@ namespace FaultDetectorDotNet.Core.Logger
             LogUserMessage($"Process completed in {Math.Round(_watch.Elapsed.TotalSeconds, 1)} seconds.");
         }
 
+        public abstract TextWriter Output { get; }
         public abstract void LogDebugMessage(string message);
         public abstract void LogDebugMessage(string message, Exception ex);
         public abstract void LogUserMessage(string message);
