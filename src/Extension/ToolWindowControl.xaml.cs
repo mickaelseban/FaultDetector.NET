@@ -39,6 +39,7 @@ namespace FaultDetectorDotNet.Extension
         private CancellationTokenSource _suspiciousnessServiceExecutionCancellationTokenSource;
         private int _totalCount;
         private int _totalWithScoreCount;
+        private IProjectHelper _projectHelper;
 
         public ToolWindowControl()
         {
@@ -51,6 +52,7 @@ namespace FaultDetectorDotNet.Extension
             SuspiciousnessResultItems = new ObservableCollection<SuspiciousnessItem>();
             SuspiciousnessAggregatedResultItems = new ObservableCollection<NormalizatedSuspiciousnessItem>();
             GridData = new ObservableCollection<DataGridItem>();
+            _projectHelper = new ProjectHelper();
         }
 
         public ObservableCollection<SuspiciousnessItem> SuspiciousnessResultItems { get; }
@@ -294,7 +296,7 @@ namespace FaultDetectorDotNet.Extension
                     var parameters = SuspiciousnessServiceParametersFactory.Create(testProjectFullPath,
                         selectedTechniques,
                         selectedSymmetryLevels, isNormalizatedTechniqueSelected);
-                    return _spectrumBasedFaultLocalizationRunner.Run(processLogger, reporter, parameters, cts.Token);
+                    return _spectrumBasedFaultLocalizationRunner.Run(processLogger, reporter, _projectHelper, parameters, cts.Token);
                 }, cts.Token);
             }
         }
@@ -354,7 +356,7 @@ namespace FaultDetectorDotNet.Extension
             var projects = GetAllProjects();
             foreach (var project in projects)
             {
-                if (ProjectHelper.IsTestProject(project.FileName))
+                if (_projectHelper.IsTestProject(project.FileName))
                 {
                     TestProjectsComboBox.Items.Add(new ComboBoxItem { Content = project.Name, Tag = project });
                 }

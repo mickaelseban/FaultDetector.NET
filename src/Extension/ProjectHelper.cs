@@ -10,16 +10,15 @@ using Microsoft.Build.Logging;
 namespace FaultDetectorDotNet.Extension
 {
     public class ProjectHelper : IProjectHelper
-
     {
-        public (string Name, string Path) BuildProject(string projectFilePath)
+        public string BuildProject(string projectFilePath)
         {
             try
             {
                 var projectCollection = new ProjectCollection();
                 var buildParameters = new BuildParameters(projectCollection)
                 {
-                    Loggers = new List<ILogger> { new ConsoleLogger(LoggerVerbosity.Normal) }
+                    Loggers = new List<ILogger> { new ConsoleLogger(LoggerVerbosity.Quiet) }
                 };
 
                 var buildRequest = new BuildRequestData(projectFilePath, new Dictionary<string, string>(), null,
@@ -69,7 +68,7 @@ namespace FaultDetectorDotNet.Extension
             return false;
         }
 
-        private (string Name, string Path) GetProjectOutputPath(string projectFilePath)
+        private string GetProjectOutputPath(string projectFilePath)
         {
             var projectCollection = new ProjectCollection();
             var project = projectCollection.LoadProject(projectFilePath);
@@ -81,7 +80,7 @@ namespace FaultDetectorDotNet.Extension
                 var assemblyName = project.GetPropertyValue("AssemblyName");
                 var outputFilePath = Path.Combine(fullOutputPath, assemblyName + ".dll");
 
-                return (assemblyName, outputFilePath);
+                return outputFilePath;
             }
             catch (Exception)
             {

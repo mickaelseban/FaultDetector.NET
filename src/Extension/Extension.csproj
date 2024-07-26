@@ -66,6 +66,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Build">
+      <Version>17.10.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Build.Framework">
+      <Version>17.10.4</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.32112.339" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop">
       <Version>17.10.40170</Version>
@@ -77,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LineIdComparer.cs" />
+    <Compile Include="ProjectHelper.cs" />
     <Compile Include="SuspiciousnessServiceParametersFactory.cs" />
     <Compile Include="DataGridItem.cs" />
     <Compile Include="ExtensionReporter.cs" />

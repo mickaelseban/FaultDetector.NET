@@ -62,6 +62,7 @@ namespace FaultDetectorDotNet.Tool
 
             var rootCommand = new RootCommand
             {
+                testProjectFullPathArgument,
                 dllPathOption,
                 exportPathOption,
                 verboseOption,
@@ -84,6 +85,7 @@ namespace FaultDetectorDotNet.Tool
                         AttachDebugger();
                     }
 
+
                     var executionId = Guid.NewGuid().ToString();
                     using IProcessLogger processLogger = new ConsoleOutputLogger(verbose);
                     var parameters = SuspiciousnessServiceParametersFactory.Create(testProjectFullPath,
@@ -96,6 +98,7 @@ namespace FaultDetectorDotNet.Tool
                         processLogger);
                     await new SpectrumBasedFaultLocalizationRunner().Run(processLogger,
                         reporter,
+                        new ProjectHelper(),
                         parameters,
                         CancellationToken.None);
 

@@ -4,13 +4,14 @@
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
 		<PackAsTool>true</PackAsTool>
-		<PackageId>dotnet-fault-detector</PackageId>
-		<ToolCommandName>dotnet-faultdetector</ToolCommandName>
+		<PackageId>faultdetector</PackageId>
+		<ToolCommandName>faultdetector</ToolCommandName>
 		<PackageOutputPath>./nupkg</PackageOutputPath>
 		<Authors>Mickael Seban</Authors>
 		<Version>1.0.0</Version>
 		<AssemblyName>FaultDetectorDotNet.Tool</AssemblyName>
 		<RootNamespace>FaultDetectorDotNet.Tool</RootNamespace>
+		<DisableMSBuildAssemblyCopyCheck>true</DisableMSBuildAssemblyCopyCheck>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -20,6 +21,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Build" Version="17.10.4" />
+		<PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />
 	  <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
 	</ItemGroup>
 

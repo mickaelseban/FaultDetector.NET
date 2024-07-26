@@ -10,6 +10,11 @@ namespace FaultDetectorDotNet.Tool
         private readonly string _executionId;
         private readonly string _exportPath;
         private readonly IProcessLogger _processLogger;
+        private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            Formatting = Formatting.Indented
+        };
 
         public ToolReporter(string executionId, string exportPath, IProcessLogger processLogger)
         {
@@ -21,7 +26,7 @@ namespace FaultDetectorDotNet.Tool
         public void Write(SuspiciousnessRunnerResult result)
         {
             var filePath = Path.Combine(_exportPath, $"{_executionId}.json");
-            var serializeObject = JsonConvert.SerializeObject(result, Formatting.Indented);
+            var serializeObject = JsonConvert.SerializeObject(result, Settings);
             File.WriteAllText(filePath, serializeObject);
             _processLogger.LogUserMessage($"Process finished and exported to {filePath}");
             PrintResult(_processLogger, result);

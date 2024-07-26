@@ -5,9 +5,15 @@ namespace FaultDetectorDotNet.Extension
 {
     public class DataGridItem : INotifyPropertyChanged
     {
+        private string _class;
+
+        private string _file;
         private Dictionary<string, int> _hits = new Dictionary<string, int>();
 
-        private string _class;
+        private int _line;
+
+        private string _lineId;
+
         public string Class
         {
             get => _class;
@@ -18,7 +24,6 @@ namespace FaultDetectorDotNet.Extension
             }
         }
 
-        private string _file;
         public string File
         {
             get => _file;
@@ -29,7 +34,6 @@ namespace FaultDetectorDotNet.Extension
             }
         }
 
-        private int _line;
         public int Line
         {
             get => _line;
@@ -40,7 +44,6 @@ namespace FaultDetectorDotNet.Extension
             }
         }
 
-        private string _lineId;
         public string LineId
         {
             get => _lineId;

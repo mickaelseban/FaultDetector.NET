@@ -5,20 +5,27 @@ using FaultDetectorDotNet.Core.Helpers;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
+using Microsoft.Build.Locator;
 using Microsoft.Build.Logging;
 
 namespace FaultDetectorDotNet.Tool
 {
     public class ProjectHelper : IProjectHelper
     {
-        public (string Name, string Path) BuildProject(string projectFilePath)
+        public string BuildProject(string projectFilePath)
+        {
+            MSBuildLocator.RegisterDefaults();
+            return ProjectOutputPath(projectFilePath);
+        }
+
+        private static string ProjectOutputPath(string projectFilePath)
         {
             try
             {
                 var projectCollection = new ProjectCollection();
                 var buildParameters = new BuildParameters(projectCollection)
                 {
-                    Loggers = new List<ILogger> { new ConsoleLogger(LoggerVerbosity.Normal) }
+                    Loggers = new List<ILogger> { new ConsoleLogger(LoggerVerbosity.Minimal) }
                 };
 
                 var buildRequest = new BuildRequestData(projectFilePath, new Dictionary<string, string>(), null,
@@ -32,8 +39,9 @@ namespace FaultDetectorDotNet.Tool
 
                 throw new Exception("Build failed.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine($"Exception during build: {ex.Message}");
                 return default;
             }
         }
@@ -60,15 +68,16 @@ namespace FaultDetectorDotNet.Tool
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine($"Exception during test project check: {ex.Message}");
                 return false;
             }
 
             return false;
         }
 
-        private (string Name, string Path) GetProjectOutputPath(string projectFilePath)
+        private static string GetProjectOutputPath(string projectFilePath)
         {
             var projectCollection = new ProjectCollection();
             var project = projectCollection.LoadProject(projectFilePath);
@@ -80,10 +89,11 @@ namespace FaultDetectorDotNet.Tool
                 var assemblyName = project.GetPropertyValue("AssemblyName");
                 var outputFilePath = Path.Combine(fullOutputPath, assemblyName + ".dll");
 
-                return (assemblyName, outputFilePath);
+                return outputFilePath;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine($"Exception during path retrieval: {ex.Message}");
                 return default;
             }
         }

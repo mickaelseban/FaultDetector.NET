@@ -16,7 +16,7 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
     {
         public event EventHandler<SpectrumBasedFaultLocalizationRunnerStatusType> SpectrumBasedFaultLocalizationRunnerStatusChanged;
 
-        public async Task Run(IProcessLogger logger, IReporter reporter, SuspiciousnessServiceParameters inputParameters, CancellationToken cancellationToken)
+        public async Task Run(IProcessLogger logger, IReporter reporter, IProjectHelper projectHelper, SuspiciousnessServiceParameters inputParameters, CancellationToken cancellationToken)
         {
             SpectrumBasedFaultLocalizationRunnerStatusChanged?.Invoke(this, SpectrumBasedFaultLocalizationRunnerStatusType.Running);
             var testsMetadata = new Dictionary<string, TestMetadata>();
@@ -38,16 +38,15 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
 
                 cancellationToken.ThrowIfCancellationRequested();
 
-                (var testProjectName, var testProjectDllPath) = ProjectHelper.BuildProject(inputParameters.TestProjectFullPath);
+                var testProjectDllPath = projectHelper.BuildProject(inputParameters.TestProjectFullPath);
 
-                testsMetadata = await ListTests(logger, testProjectName, cancellationToken);
-
-                if (!File.Exists(testProjectDllPath))
+                if (string.IsNullOrEmpty(testProjectDllPath) || !File.Exists(testProjectDllPath))
                 {
-                    logger.LogUserMessage($"The DLL: \"{testProjectDllPath}\" was not found");
+                    logger.LogUserMessage($"The project {inputParameters.TestProjectFullPath} was not found");
                     return;
                 }
 
+                testsMetadata = await ListTests(logger, inputParameters.TestProjectFullPath, cancellationToken);
                 var tempPath = Path.Combine(Path.GetTempPath(), inputParameters.ExecutionId);
                 Directory.CreateDirectory(tempPath);
 
@@ -230,12 +229,12 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
             }
         }
 
-        private static async Task<Dictionary<string, TestMetadata>> ListTests(IProcessLogger logger, string testProjectName, CancellationToken cancellationToken)
+        private static async Task<Dictionary<string, TestMetadata>> ListTests(IProcessLogger logger, string TestProjectFullPath, CancellationToken cancellationToken)
         {
             var processInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = $"dotnet test {testProjectName} --list-tests",
+                Arguments = $"dotnet test {TestProjectFullPath} --list-tests",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
