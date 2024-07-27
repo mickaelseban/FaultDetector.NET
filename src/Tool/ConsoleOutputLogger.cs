@@ -4,7 +4,7 @@ using FaultDetectorDotNet.Core.Logger;
 
 namespace FaultDetectorDotNet.Tool
 {
-    public class ConsoleOutputLogger : ProcessLogger
+    public sealed class ConsoleOutputLogger : ProcessLogger
     {
         private readonly bool _verboseMode;
 

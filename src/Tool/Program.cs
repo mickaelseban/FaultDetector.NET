@@ -5,8 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FaultDetectorDotNet.Core.Logger;
 using FaultDetectorDotNet.Core.Suspiciousness;
-using FaultDetectorDotNet.Core.SymmetryCoefficientCalculators;
-using FaultDetectorDotNet.Core.TechniqueCalculators;
+using FaultDetectorDotNet.Tool.CustomArguments;
 
 namespace FaultDetectorDotNet.Tool
 {
@@ -14,64 +13,54 @@ namespace FaultDetectorDotNet.Tool
     {
         public static async Task<int> Main(string[] args)
         {
-            var testProjectFullPathArgument = new Argument<string>(
-                "test-project-full-path",
-                "The test project name"
-            );
-
             var verboseOption = new Option<bool>(
                 new[] { "--verbose", "-v" },
-                description: "Print logs to the console (true or false)",
+                description: "Print Verbose Logs",
                 getDefaultValue: () => false
             );
 
             var debugOption = new Option<bool>(
                 new[] { "--debug", "-d" },
-                description: "Enable or disable debug mode (true or false)",
+                description: "Enable debug mode",
                 getDefaultValue: () => false
             );
 
-            var exportPathOption = new Option<string>(
-                new[] { "--exportPath", "-e" },
-                "The path to export the results"
-            );
-
-            var spectrumBasedTechniquesOption = new Option<string[]>(
-                new[] { "--techniques", "-t" },
-                description: $"Spectrum-based techniques ({string.Join(" | ", Enum.GetNames<TechniqueType>())})",
-                getDefaultValue: () => new[] { nameof(TechniqueType.Tarantula) }
-            );
-
-            var symmetryCoefficientsOption = new Option<string[]>(
-                new[] { "--coefficients", "-c" },
-                description: $"Symmetry Coefficient({string.Join(" | ", Enum.GetNames<SymmetryCoefficientType>())})",
-                getDefaultValue: () => new[] {  nameof(SymmetryCoefficientType.Default) }
-            );
-
-            var allSpectrumBasedTechniquesOption = new Option<bool>(
-                new[] { "--all-techniques", "-a" },
-                description: "Enable all spectrum-based techniques",
+            var splitSuspiciousnessResultsOption = new Option<bool>(
+                new[] { "--slip-suspiciousness-results", "-ssr" },
+                description: "Enable Split Suspiciousness Results. Default - Aggregated Results",
                 getDefaultValue: () => false
             );
 
+            var normalizatedTechniqueOption = new Option<bool>(
+                new[] { "--normalizated", "-n" },
+                description: "Enable Normalizated Suspiciousness Technique",
+                getDefaultValue: () => false
+            );
+
+            var symmetryCoefficientsOption = new SymmetryCoefficientsOption();
+            var testProjectFullPathArgument = new TestProjectFullPathArgument();
+            var techniquesOption = new TechniquesOption();
+            var exportPathOption = new ExportPathOption();
             var rootCommand = new RootCommand
             {
                 testProjectFullPathArgument,
                 exportPathOption,
                 verboseOption,
                 debugOption,
-                spectrumBasedTechniquesOption,
-                allSpectrumBasedTechniquesOption,
-                symmetryCoefficientsOption
+                techniquesOption,
+                symmetryCoefficientsOption,
+                normalizatedTechniqueOption, 
+                splitSuspiciousnessResultsOption
             };
 
             rootCommand.SetHandler(async (testProjectFullPath,
                     exportPath,
                     verbose,
                     debugMode,
-                    spectrumBasedTechnics,
-                    allSpectrumBasedTechniques,
-                    symmetryCoefficients) =>
+                    techniques,
+                    symmetryCoefficients,
+                    normalizatedTechnique,
+                    splitSuspiciousnessResults) =>
                 {
                     if (debugMode)
                     {
@@ -79,29 +68,32 @@ namespace FaultDetectorDotNet.Tool
                     }
 
                     var executionId = Guid.NewGuid().ToString();
-                    using IProcessLogger processLogger = new ConsoleOutputLogger(verbose);
-                    var parameters = SuspiciousnessServiceParametersFactory.Create(testProjectFullPath,
-                        spectrumBasedTechnics,
-                        allSpectrumBasedTechniques,
+                    using var processLogger = new ConsoleOutputLogger(verbose);
+                    var parameters = new SuspiciousnessServiceParameters(executionId, 
+                        testProjectFullPath,
                         symmetryCoefficients,
-                        executionId);
-                    var reporter = new ToolReporter(executionId,
-                        exportPath,
-                        processLogger);
-                    await new SpectrumBasedFaultLocalizationRunner().Run(processLogger,
-                        reporter,
-                        new ProjectHelper(),
+                        techniques, 
+                        normalizatedTechnique);
+                    
+                    var consoleReporter = new ConsoleReporter(processLogger, splitSuspiciousnessResults);
+                    var textReporter = new TextReporter( executionId, exportPath, processLogger, splitSuspiciousnessResults);
+                    var reportManager = new ReportManager(consoleReporter, textReporter);
+
+                    await new SpectrumBasedFaultLocalizationRunner()
+                    .Run(processLogger,
+                        reportManager,
+                        ProjectBuilder.BuildProject,
                         parameters,
                         CancellationToken.None);
-
                 },
                 testProjectFullPathArgument,
                 exportPathOption,
                 verboseOption,
                 debugOption,
-                spectrumBasedTechniquesOption,
-                allSpectrumBasedTechniquesOption,
-                symmetryCoefficientsOption);
+                techniquesOption,
+                symmetryCoefficientsOption,
+                normalizatedTechniqueOption, 
+                splitSuspiciousnessResultsOption);
 
             return await rootCommand.InvokeAsync(args);
         }

@@ -16,7 +16,7 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
     {
         public event EventHandler<SpectrumBasedFaultLocalizationRunnerStatusType> SpectrumBasedFaultLocalizationRunnerStatusChanged;
 
-        public async Task Run(IProcessLogger logger, IReporter reporter, IProjectHelper projectHelper, SuspiciousnessServiceParameters inputParameters, CancellationToken cancellationToken)
+        public async Task Run(IProcessLogger logger, ReportManager reportManager, BuildProject buildProject, SuspiciousnessServiceParameters inputParameters, CancellationToken cancellationToken)
         {
             SpectrumBasedFaultLocalizationRunnerStatusChanged?.Invoke(this, SpectrumBasedFaultLocalizationRunnerStatusType.Running);
             var testsMetadata = new Dictionary<string, TestMetadata>();
@@ -38,7 +38,7 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
 
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var testProjectDllPath = projectHelper.BuildProject(inputParameters.TestProjectFullPath);
+                var testProjectDllPath = buildProject(inputParameters.TestProjectFullPath);
 
                 if (string.IsNullOrEmpty(testProjectDllPath) || !File.Exists(testProjectDllPath))
                 {
@@ -85,7 +85,7 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
                     NormalizatedSuspiciousness = normalizatedSuspiciousnessResult
                 };
 
-                reporter.Write(suspiciousnessRunnerResult);
+                reportManager.ReportAll(suspiciousnessRunnerResult);
             }
             catch (OperationCanceledException)
             {

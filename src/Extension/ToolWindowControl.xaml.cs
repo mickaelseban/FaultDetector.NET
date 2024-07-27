@@ -14,7 +14,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using EnvDTE;
 using EnvDTE80;
-using FaultDetectorDotNet.Core.Helpers;
+using FaultDetectorDotNet.Core.Logger;
 using FaultDetectorDotNet.Core.Suspiciousness;
 using Microsoft;
 using Microsoft.VisualStudio.Shell;
@@ -39,7 +39,6 @@ namespace FaultDetectorDotNet.Extension
         private CancellationTokenSource _suspiciousnessServiceExecutionCancellationTokenSource;
         private int _totalCount;
         private int _totalWithScoreCount;
-        private IProjectHelper _projectHelper;
 
         public ToolWindowControl()
         {
@@ -52,7 +51,6 @@ namespace FaultDetectorDotNet.Extension
             SuspiciousnessResultItems = new ObservableCollection<SuspiciousnessItem>();
             SuspiciousnessAggregatedResultItems = new ObservableCollection<NormalizatedSuspiciousnessItem>();
             GridData = new ObservableCollection<DataGridItem>();
-            _projectHelper = new ProjectHelper();
         }
 
         public ObservableCollection<SuspiciousnessItem> SuspiciousnessResultItems { get; }
@@ -286,6 +284,7 @@ namespace FaultDetectorDotNet.Extension
                 SuspiciousnessAggregatedResultItems,
                 GridData,
                 CoverageDataGrid);
+            var reportManager = new ReportManager(reporter);
 
             using (var cts = new CancellationTokenSource())
             {
@@ -296,7 +295,13 @@ namespace FaultDetectorDotNet.Extension
                     var parameters = SuspiciousnessServiceParametersFactory.Create(testProjectFullPath,
                         selectedTechniques,
                         selectedSymmetryLevels, isNormalizatedTechniqueSelected);
-                    return _spectrumBasedFaultLocalizationRunner.Run(processLogger, reporter, _projectHelper, parameters, cts.Token);
+
+                    return _spectrumBasedFaultLocalizationRunner.Run(processLogger,
+                        reportManager,
+                        ProjectBuilder.BuildProject,
+                        parameters,
+                        cts.Token);
+
                 }, cts.Token);
             }
         }
@@ -356,7 +361,7 @@ namespace FaultDetectorDotNet.Extension
             var projects = GetAllProjects();
             foreach (var project in projects)
             {
-                if (_projectHelper.IsTestProject(project.FileName))
+                if (Core.Helpers.ProjectHelper.IsTestProject(project.FileName))
                 {
                     TestProjectsComboBox.Items.Add(new ComboBoxItem { Content = project.Name, Tag = project });
                 }

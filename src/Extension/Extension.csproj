@@ -83,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LineIdComparer.cs" />
-    <Compile Include="ProjectHelper.cs" />
+    <Compile Include="ProjectBuilder.cs" />
     <Compile Include="SuspiciousnessServiceParametersFactory.cs" />
     <Compile Include="DataGridItem.cs" />
     <Compile Include="ExtensionReporter.cs" />

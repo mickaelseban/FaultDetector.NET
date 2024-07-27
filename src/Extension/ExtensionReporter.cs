@@ -12,7 +12,7 @@ using FaultDetectorDotNet.Core.Suspiciousness;
 
 namespace FaultDetectorDotNet.Extension
 {
-    public class ExtensionReporter : IReporter
+    public sealed class ExtensionReporter : IReporter
     {
         private readonly DataGrid _coverageDataGrid;
         private readonly ObservableCollection<DataGridItem> _gridData;
@@ -38,6 +38,11 @@ namespace FaultDetectorDotNet.Extension
                 LoadSuspiciousnessAggregatedResult(_suspiciousnessAggregatedResultItems, result.NormalizatedSuspiciousness);
                 LoadTestCoverageMatrix(_gridData, _coverageDataGrid, result.TestCoverageMatrix);
             });
+        }
+
+        public bool CanWrite()
+        {
+            return true;
         }
 
         private static List<NormalizatedSuspiciousnessItem> ConvertToSuspiciousnessAggregatedResultItems(
