@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FaultDetectorDotNet.Core.SymmetryCoefficientCalculators;
-using FaultDetectorDotNet.Core.TechniqueCalculators;
+using FaultDetectorDotNet.Core.Techniques;
 
 namespace FaultDetectorDotNet.Core.Suspiciousness
 {
@@ -9,21 +8,15 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
     {
         public SuspiciousnessServiceParameters(string executionId,
             string testProjectFullPath,
-            IEnumerable<SymmetryCoefficientType> symmetryCoefficients,
-            IEnumerable<TechniqueType> techniques,
-            bool normalizatedTechnique)
+            IEnumerable<TechniqueType> techniques)
         {
             ExecutionId = executionId;
             TestProjectFullPath = testProjectFullPath;
-            NormalizatedTechnique = normalizatedTechnique;
-            SymmetryCoefficients = symmetryCoefficients.ToArray();
             Techniques = techniques.ToArray();
         }
 
         public string ExecutionId { get; }
         public string TestProjectFullPath { get; }
-        public bool NormalizatedTechnique { get; }
-        public IReadOnlyList<SymmetryCoefficientType> SymmetryCoefficients { get; }
         public IReadOnlyList<TechniqueType> Techniques { get; }
     }
 }

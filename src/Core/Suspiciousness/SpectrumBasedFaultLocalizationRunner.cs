@@ -74,15 +74,13 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
                 var coverageAggregated = CoverageFactory.CreateAggregated(testsMetadata);
                 var testCoverageMatrix = CoverageFactory.CreateCoverageMatrix(testsMetadata);
                 var suspiciousnessResult = SuspiciousnessCalculator.Calculate(coverageAggregated, inputParameters);
-                var normalizatedSuspiciousnessResult = SuspiciousnessResultNormalizer.Normalize(coverageAggregated, inputParameters);
-                
+
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var suspiciousnessRunnerResult = new SuspiciousnessRunnerResult
                 {
                     TestCoverageMatrix = testCoverageMatrix,
                     SuspiciousnessResult = suspiciousnessResult,
-                    NormalizatedSuspiciousness = normalizatedSuspiciousnessResult
                 };
 
                 reportManager.ReportAll(suspiciousnessRunnerResult);

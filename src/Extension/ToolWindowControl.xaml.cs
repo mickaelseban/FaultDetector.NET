@@ -25,6 +25,7 @@ namespace FaultDetectorDotNet.Extension
     public partial class ToolWindowControl : UserControl, INotifyPropertyChanged
     {
         private readonly SpectrumBasedFaultLocalizationRunner _spectrumBasedFaultLocalizationRunner;
+        public TechniqueViewModel TechniqueTypes { get; } = new TechniqueViewModel();
 
         private readonly Predicate<object> FilterResultsWithScoreGreaterThanZero = item =>
         {
@@ -49,12 +50,10 @@ namespace FaultDetectorDotNet.Extension
             Unloaded += ToolWindow1Control_Unloaded;
             _spectrumBasedFaultLocalizationRunner = new SpectrumBasedFaultLocalizationRunner();
             SuspiciousnessResultItems = new ObservableCollection<SuspiciousnessItem>();
-            SuspiciousnessAggregatedResultItems = new ObservableCollection<NormalizatedSuspiciousnessItem>();
             GridData = new ObservableCollection<DataGridItem>();
         }
 
         public ObservableCollection<SuspiciousnessItem> SuspiciousnessResultItems { get; }
-        public ObservableCollection<NormalizatedSuspiciousnessItem> SuspiciousnessAggregatedResultItems { get; }
         public ObservableCollection<DataGridItem> GridData { get; }
 
         public int TotalCount
@@ -110,7 +109,6 @@ namespace FaultDetectorDotNet.Extension
             _collectionView = CollectionViewSource.GetDefaultView(SuspiciousnessResultItems);
             _collectionView.Filter = FilterResultsWithScoreGreaterThanZero;
             SuspiciousnessResultsListView.ItemsSource = SuspiciousnessResultItems;
-            NormalizatedSuspiciousnessResultsListView.ItemsSource = SuspiciousnessAggregatedResultItems;
             SuspiciousnessResultItems.CollectionChanged += SuspiciousnessResultItemsCollectionChanged;
 
             UpdateUi();
@@ -142,16 +140,13 @@ namespace FaultDetectorDotNet.Extension
                 UpdateControls(forceDisable);
                 if (e is SpectrumBasedFaultLocalizationRunnerStatusType.Finished)
                 {
-                    ApplyActionInCheckBoxes(checkBox => checkBox.IsChecked = false,
-                        DefaultFaultLocalizationTechniquesPanel, NormalizatedFaultLocalizationTechniquePanel,
-                        SymmetryCoefficientPanel);
+                    ApplyActionInCheckBoxes(checkBox => checkBox.IsChecked = false, FaultLocalizationTechniquesPanel);
                     AbortScanButton.Visibility = Visibility.Hidden;
                 }
                 else if (e is SpectrumBasedFaultLocalizationRunnerStatusType.Running)
                 {
                     CoverageDataGrid.Columns.Clear();
                     SuspiciousnessResultItems.Clear();
-                    SuspiciousnessAggregatedResultItems.Clear();
                     GridData.Clear();
                     AbortScanButton.Visibility = Visibility.Visible;
                 }
@@ -209,38 +204,28 @@ namespace FaultDetectorDotNet.Extension
                 TestProjectsComboBox.IsEnabled = false;
                 RunButton.IsEnabled = false;
                 SearchTextBox.Text = string.Empty;
-                ApplyActionInCheckBoxes(checkBox => checkBox.IsEnabled = false, DefaultFaultLocalizationTechniquesPanel,
-                    NormalizatedFaultLocalizationTechniquePanel,
-                    SymmetryCoefficientPanel);
+                ApplyActionInCheckBoxes(checkBox => checkBox.IsEnabled = false, FaultLocalizationTechniquesPanel);
             }
             else
             {
                 var solutionLoaded = _dte.Solution != null && _dte.Solution.IsOpen;
                 TestProjectsComboBox.IsEnabled = solutionLoaded && TestProjectsComboBox.SelectedItem != null;
-                var anyDefaultFaultLocalizationTechniquesEnabled =
-                    GetSelected(DefaultFaultLocalizationTechniquesPanel).Any();
+                var anyDefaultFaultLocalizationTechniquesEnabled = GetSelected(FaultLocalizationTechniquesPanel).Any();
                 var normalizatedFaultLocalizationTechniqueEnabled =
-                    GetSelected(NormalizatedFaultLocalizationTechniquePanel).Any();
-                var anyAdjustableSymmetryCoefficientEnabled = GetSelected(SymmetryCoefficientPanel).Any();
+                    GetSelected(FaultLocalizationTechniquesPanel).Any();
                 if (solutionLoaded && TestProjectsComboBox.IsEnabled)
                 {
                     ApplyActionInCheckBoxes(checkBox => checkBox.IsEnabled = true,
-                        DefaultFaultLocalizationTechniquesPanel, NormalizatedFaultLocalizationTechniquePanel,
-                        SymmetryCoefficientPanel);
+                        FaultLocalizationTechniquesPanel);
                 }
                 else
                 {
-                    ApplyActionInCheckBoxes(checkBox => checkBox.IsEnabled = false,
-                        DefaultFaultLocalizationTechniquesPanel, NormalizatedFaultLocalizationTechniquePanel,
-                        SymmetryCoefficientPanel);
+                    ApplyActionInCheckBoxes(checkBox => checkBox.IsEnabled = false, FaultLocalizationTechniquesPanel);
                 }
 
                 var canEnableScanButton = solutionLoaded
                                           && TestProjectsComboBox.SelectedItem != null
-                                          && ((anyDefaultFaultLocalizationTechniquesEnabled &&
-                                               anyAdjustableSymmetryCoefficientEnabled)
-                                              || (normalizatedFaultLocalizationTechniqueEnabled &&
-                                                  !anyDefaultFaultLocalizationTechniquesEnabled));
+                                          && (anyDefaultFaultLocalizationTechniquesEnabled || normalizatedFaultLocalizationTechniqueEnabled );
 
                 RunButton.IsEnabled = canEnableScanButton;
             }
@@ -275,13 +260,10 @@ namespace FaultDetectorDotNet.Extension
         private async void RunButton_Click(object sender, RoutedEventArgs e)
         {
             var testProjectFullPath = GetSelectedProjectFullPath();
-            var selectedTechniques = GetSelected(DefaultFaultLocalizationTechniquesPanel);
-            var selectedSymmetryLevels = GetSelected(SymmetryCoefficientPanel);
-            var isNormalizatedTechniqueSelected = GetSelected(NormalizatedFaultLocalizationTechniquePanel).Any();
+            var selectedTechniques = GetSelected(FaultLocalizationTechniquesPanel);
 
             var processLogger = new TextBoxLoggerAdapter(LogTextBox, true);
             var reporter = new ExtensionReporter(SuspiciousnessResultItems,
-                SuspiciousnessAggregatedResultItems,
                 GridData,
                 CoverageDataGrid);
             var reportManager = new ReportManager(reporter);
@@ -293,8 +275,7 @@ namespace FaultDetectorDotNet.Extension
                 await Task.Run(() =>
                 {
                     var parameters = SuspiciousnessServiceParametersFactory.Create(testProjectFullPath,
-                        selectedTechniques,
-                        selectedSymmetryLevels, isNormalizatedTechniqueSelected);
+                        selectedTechniques);
 
                     return _spectrumBasedFaultLocalizationRunner.Run(processLogger,
                         reportManager,
@@ -330,8 +311,6 @@ namespace FaultDetectorDotNet.Extension
 
                     return (!string.IsNullOrWhiteSpace(resultItem.Technique) &&
                             resultItem.Technique.ToLower().Contains(searchText)) ||
-                           (!string.IsNullOrWhiteSpace(resultItem.AdjustableSymmetryCoefficient) &&
-                            resultItem.AdjustableSymmetryCoefficient.ToLower().Contains(searchText)) ||
                            (!string.IsNullOrWhiteSpace(resultItem.Assembly) &&
                             resultItem.Assembly.ToLower().Contains(searchText)) ||
                            (!string.IsNullOrWhiteSpace(resultItem.File) &&
@@ -519,7 +498,7 @@ namespace FaultDetectorDotNet.Extension
             UpdateControls();
         }
 
-        private static string[] GetSelected(StackPanel stackPanel)
+        private static string[] GetSelected(WrapPanel stackPanel)
         {
             var selected = new List<string>();
 
@@ -534,7 +513,7 @@ namespace FaultDetectorDotNet.Extension
             return selected.ToArray();
         }
 
-        private static void ApplyActionInCheckBoxes(Action<CheckBox> action, params StackPanel[] stackPanels)
+        private static void ApplyActionInCheckBoxes(Action<CheckBox> action, params WrapPanel[] stackPanels)
         {
             foreach (var stackPanel in stackPanels)
             {
@@ -546,11 +525,6 @@ namespace FaultDetectorDotNet.Extension
                     }
                 }
             }
-        }
-
-        private void SymmetryCoefficientCheckBox_Checked_Unchecked(object sender, RoutedEventArgs e)
-        {
-            UpdateControls();
         }
 
         private void CoverageDataGridSortHandler(object sender, DataGridSortingEventArgs e)

@@ -88,7 +88,7 @@
     <Compile Include="DataGridItem.cs" />
     <Compile Include="ExtensionReporter.cs" />
     <Compile Include="SolutionEventsHandler.cs" />
-    <Compile Include="SuspiciousnessAggregatedResultItem.cs" />
+    <Compile Include="TechniqueViewModel.cs" />
     <Compile Include="TextBoxLoggerAdapter.cs" />
     <Compile Include="SuspiciousnessResultItem.cs" />
     <Compile Include="ToolWindow.cs" />

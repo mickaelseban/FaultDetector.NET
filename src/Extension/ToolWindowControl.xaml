@@ -20,203 +20,118 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <WrapPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
-            <WrapPanel 
-                x:Name="FaultLocalizationTechniquesPanel"
-                Orientation="Horizontal" >
-                <StackPanel x:Name="DefaultFaultLocalizationTechniquesPanel" Orientation="Horizontal" Margin="0, 5, 0, 5">
-                    <Label Content="Techniques:"
-                     Style="{DynamicResource {x:Static vsshell:VsResourceKeys.LabelEnvironmentBoldStyleKey}}"
-                     Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
-                     Padding="5,5, 10, 5"
-                     VerticalAlignment="Center" />
-                    <CheckBox x:Name="CheckBoxTarantula"
-                        Content="Tarantula"
-                        Tag="Tarantula"
-                        IsEnabled="False"
-                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Margin="5,0,15,0"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-                    <CheckBox x:Name="CheckBoxOchiai"
-                        Content="Ochiai"
-                        Tag="Ochiai"
-                        IsEnabled="False"
-                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Margin="5,0,15,0"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-                    <CheckBox x:Name="CheckBoxJaccard"
-                        Content="Jaccard"
-                        Tag="Jaccard"
-                        IsEnabled="False"
-                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Margin="5,0,15,0"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-                    <CheckBox x:Name="CheckBoxDStar"
-                        Content="DStar"
-                        Tag="DStar"
-                        IsEnabled="False"
-                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Margin="5,0,15,0"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-                    <CheckBox x:Name="CheckBoxKulczynski"
-                        Content="Kulczynski"
-                        Tag="Kulczynski"
-                        IsEnabled="False"
-                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Margin="5,0,15,0"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-                    <CheckBox x:Name="CheckBoxRogersTanimoto"
-                        Content="Rogers Tanimoto"
-                        Tag="RogersTanimoto"
-                        IsEnabled="False"
-                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Margin="5,0,15,0"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-                </StackPanel>
-                <StackPanel x:Name="NormalizatedFaultLocalizationTechniquePanel" 
-                      Orientation="Horizontal"
-                      Margin="0, 5, 0, 5">
-                    <CheckBox x:Name="CheckNormalizatedTechnique"
-                        Content="Normalizated"
-                        Tag="NormalizatedTechnique"
-                        IsEnabled="False"
-                        Checked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
-                        Margin="5,0,15,0"
-                        VerticalAlignment="Center"
-                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-                </StackPanel>
-            </WrapPanel>
-            
-            <StackPanel x:Name="SymmetryCoefficientPanel" Orientation="Horizontal" Margin="0, 5, 0, 5">
-                <Label Content="Symmetry Coefficients:"
+        <WrapPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Techniques:"
                        Style="{DynamicResource {x:Static vsshell:VsResourceKeys.LabelEnvironmentBoldStyleKey}}"
                        Foreground="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowTextKey}}"
                        Padding="5,5, 10, 5"
                        VerticalAlignment="Center" />
-                <CheckBox x:Name="CheckBoxNone"
-                          Content="Default"
-                          Tag="Default"
-                          IsEnabled="True"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified01Coefficient"
-                          Content="Simplified 0.1"
-                          Tag="Simplified01"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified02Coefficient"
-                          Content="Simplified 0.2"
-                          Tag="Simplified02"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified03Coefficient"
-                          Content="Simplified 0.3"
-                          Tag="Simplified03"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified04Coefficient"
-                          Content="Simplified 0.4"
-                          Tag="Simplified04"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified05Coefficient"
-                          Content="Simplified 0.5"
-                          Tag="Simplified05"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified06Coefficient"
-                          Content="Simplified 0.6"
-                          Tag="Simplified06"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified07Coefficient"
-                          Content="Simplified 0.7"
-                          Tag="Simplified07"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified08Coefficient"
-                          Content="Simplified 0.8"
-                          Tag="Simplified08"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified09Coefficient"
-                          Content="Simplified 0.9"
-                          Tag="Simplified09"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
-                <CheckBox x:Name="CheckBoxSimplified10Coefficient"
-                          Content="Simplified 1.0"
-                          Tag="Simplified10"
-                          IsEnabled="False"
-                          Checked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Unchecked="SymmetryCoefficientCheckBox_Checked_Unchecked"
-                          Margin="5,0,15,0"
-                          VerticalAlignment="Center"
-                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
-
             </StackPanel>
+            <WrapPanel
+                x:Name="FaultLocalizationTechniquesPanel"
+                Orientation="Horizontal">
+                <CheckBox x:Name="CheckBoxTarantula"
+                          Tag="{Binding TechniqueTypes.Tarantula.Value}"
+                          Content="{Binding TechniqueTypes.Tarantula.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                <CheckBox x:Name="CheckBoxOchiai"
+                          Tag="{Binding TechniqueTypes.Ochiai.Value}"
+                          Content="{Binding TechniqueTypes.Ochiai.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                <CheckBox x:Name="CheckBoxJaccard"
+                          Tag="{Binding TechniqueTypes.Jaccard.Value}"
+                          Content="{Binding TechniqueTypes.Jaccard.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                <CheckBox x:Name="CheckBoxDStar"
+                          Tag="{Binding TechniqueTypes.DStar.Value}"
+                          Content="{Binding TechniqueTypes.DStar.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                <CheckBox x:Name="CheckBoxKulczynski"
+                          Tag="{Binding TechniqueTypes.Kulczynski.Value}"
+                          Content="{Binding TechniqueTypes.Kulczynski.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                <CheckBox x:Name="CheckBoxRogersTanimoto"
+                          Tag="{Binding TechniqueTypes.RogersTanimoto.Value}"
+                          Content="{Binding TechniqueTypes.RogersTanimoto.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                <CheckBox x:Name="CheckBoxMickaelSeban"
+                          Tag="{Binding TechniqueTypes.MickaelSeban.Value}"
+                          Content="{Binding TechniqueTypes.MickaelSeban.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                <CheckBox x:Name="CheckBoxTarantulaAndAlbertoSampaioCs"
+                          Tag="{Binding TechniqueTypes.TarantulaAndAlbertoSampaioCs.Value}"
+                          Content="{Binding TechniqueTypes.TarantulaAndAlbertoSampaioCs.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                <CheckBox x:Name="CheckBoxSokalSneathAndAlbertoSampaioCs"
+                          Tag="{Binding TechniqueTypes.SokalSneathAndAlbertoSampaioCs.Value}"
+                          Content="{Binding TechniqueTypes.SokalSneathAndAlbertoSampaioCs.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+                <CheckBox x:Name="CheckBoxSimpleMatchingAndAlbertoSampaioCs"
+                          Tag="{Binding TechniqueTypes.SimpleMatchingAndAlbertoSampaioCs.Value}"
+                          Content="{Binding TechniqueTypes.SimpleMatchingAndAlbertoSampaioCs.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+
+                <CheckBox x:Name="CheckBoxRogerTanimotoAndAlbertoSampaioCs"
+                          Tag="{Binding TechniqueTypes.RogerTanimotoAndAlbertoSampaioCs.Value}"
+                          Content="{Binding TechniqueTypes.RogerTanimotoAndAlbertoSampaioCs.DisplayName}"
+                          IsEnabled="False"
+                          Checked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Unchecked="FaultTechniqueCheckBox_Checked_Unchecked"
+                          Margin="5,0,15,5"
+                          VerticalAlignment="Center"
+                          Style="{DynamicResource {x:Static vsshell:VsResourceKeys.CheckBoxStyleKey}}" />
+            </WrapPanel>
         </WrapPanel>
 
         <WrapPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"
@@ -341,55 +256,6 @@
                             <DataGridTextColumn Header="Score" Binding="{Binding Score}" Width="110" />
                         </DataGrid.Columns>
                     </DataGrid>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="Normalizated Suspiciousness"
-                     Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogTabItemNavigationStyleKey}}">
-                <Grid Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <DataGrid x:Name="NormalizatedSuspiciousnessResultsListView"
-                              ItemsSource="{Binding SuspiciousnessAggregatedResultItems}"
-                              AutoGenerateColumns="False"
-                              Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
-                              BorderThickness="0"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"
-                              MouseDoubleClick="MultiSelector_MouseDoubleClick">
-                        <DataGrid.Resources>
-                            <SolidColorBrush x:Key="CustomBlueBrush" Color="{DynamicResource CustomBlueColor}" />
-                            <Color x:Key="CustomBlueColor" R="0" G="0" B="90" A="255" />
-                            <Style TargetType="DataGrid">
-                                <Setter Property="GridLinesVisibility" Value="None" />
-                            </Style>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="BorderBrush" Value="Transparent" />
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="Padding" Value="0" />
-                                <Setter Property="Foreground" Value="{StaticResource CustomBlueBrush}" />
-                            </Style>
-                        </DataGrid.Resources>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Assembly" Binding="{Binding Assembly}" Width="100" />
-                            <DataGridTextColumn Header="File" Binding="{Binding File}" Width="200" />
-                            <DataGridTextColumn Header="Class" Binding="{Binding Class}" Width="150" />
-                            <DataGridTextColumn Header="Method" Binding="{Binding Method}" Width="150" />
-                            <DataGridTextColumn Header="Line" Binding="{Binding Line}" Width="50" />
-                            <DataGridTextColumn Header="Score" Binding="{Binding Score}" Width="110" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-
                 </Grid>
             </TabItem>
 

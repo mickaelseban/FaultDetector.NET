@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using FaultDetectorDotNet.Core.SymmetryCoefficientCalculators;
-using FaultDetectorDotNet.Core.TechniqueCalculators;
+using FaultDetectorDotNet.Core.Techniques;
 
 namespace FaultDetectorDotNet.Core.Suspiciousness
 {
     public sealed class SuspiciousnessResult
     {
-        public Dictionary<(TechniqueType, SymmetryCoefficientType), Technique> Techniques { get; set; } = new Dictionary<(TechniqueType, SymmetryCoefficientType), Technique>();
+        public Dictionary<TechniqueType, Technique> Techniques { get; set; } = new Dictionary<TechniqueType, Technique>();
 
         public sealed class Technique
         {

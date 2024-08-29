@@ -17,7 +17,6 @@ namespace FaultDetectorDotNet.Tool
             {
                 PrintSuspiciousness(textWriter, result.SuspiciousnessResult);
             }
-            PrintNormalizatedSuspiciousness(textWriter, result.NormalizatedSuspiciousness);
         }
 
         private static void PrintSuspiciousness(TextWriter textWriter, SuspiciousnessResult result)
@@ -145,62 +144,6 @@ namespace FaultDetectorDotNet.Tool
             table.Sort((x, y) => y.Item4.CompareTo(x.Item4));
 
 
-            return table;
-        }
-
-        private static void PrintNormalizatedSuspiciousness(TextWriter textWriter, NormalizatedSuspiciousness result)
-        {
-            if (result == null)
-            {
-                return;
-            }
-
-            textWriter.WriteLine("# Normalizated Suspiciousness ####################");
-
-            var options = new ConsoleTableOptions
-            {
-                Columns = new List<string> { "Class", "Method", "Line", "Score" },
-                OutputTo = textWriter,
-                EnableCount = false
-            };
-
-            var consoleTable = new ConsoleTable(options);
-
-            foreach (var row in PrintNormalizatedSuspiciousnessTable(result))
-            {
-                consoleTable.AddRow(row.Item1, row.Item2, row.Item3, row.Item4);
-            }
-
-            consoleTable.Write();
-        }
-
-        private static List<(string, string, int, double)> PrintNormalizatedSuspiciousnessTable(
-            NormalizatedSuspiciousness result)
-        {
-            var table = new List<(string, string, int, double)>();
-
-            foreach (var assembly in result.Assemblies.Values)
-            {
-                foreach (var file in assembly.Files.Values)
-                {
-                    foreach (var @class in file.Classes.Values)
-                    {
-                        foreach (var method in @class.Methods.Values)
-                        {
-                            foreach (var line in method.Lines.Values)
-                            {
-                                if (line.Score > 0)
-                                {
-                                    table.Add((@class.Name, method.Signature, line.Number, line.Score));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            table.Sort((x, y) => y.Item4.CompareTo(x.Item4));
             return table;
         }
     }

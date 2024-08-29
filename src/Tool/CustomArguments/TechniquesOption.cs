@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Parsing;
 using System.Linq;
-using FaultDetectorDotNet.Core.TechniqueCalculators;
+using FaultDetectorDotNet.Core.Techniques;
 
 namespace FaultDetectorDotNet.Tool.CustomArguments
 {
@@ -21,8 +21,8 @@ namespace FaultDetectorDotNet.Tool.CustomArguments
 
         private static string TechniquesList()
         {
-            var techniques = Enum.GetValues<TechniqueType>()
-                .Select(type => $"{(int)type} - {type}")
+            var techniques = TechniqueType.List()
+                .Select(type => $"{type.Value} - {type.DisplayName}")
                 .ToArray();
 
             return string.Join(" | ", techniques);
@@ -37,14 +37,31 @@ namespace FaultDetectorDotNet.Tool.CustomArguments
                 var values = token.Value.Split(',', StringSplitOptions.RemoveEmptyEntries);
                 foreach (var value in values)
                 {
-                    if (int.TryParse(value, out var intValue) && Enum.IsDefined(typeof(TechniqueType), intValue))
+                    if (int.TryParse(value, out var intValue))
                     {
-                        techniques.Add((TechniqueType)intValue);
+                        var technique = TechniqueType.FromValue(intValue);
+                        if (technique != null)
+                        {
+                            techniques.Add(technique);
+                        }
+                        else
+                        {
+                            result.ErrorMessage = $"Cannot parse '{value}' as a valid TechniqueType.";
+                            return techniques;
+                        }
                     }
                     else
                     {
-                        result.ErrorMessage = $"Cannot parse '{value}' as a valid TechniqueType.";
-                        return techniques;
+                        var technique = TechniqueType.FromName(value.Trim());
+                        if (technique != null)
+                        {
+                            techniques.Add(technique);
+                        }
+                        else
+                        {
+                            result.ErrorMessage = $"Cannot parse '{value}' as a valid TechniqueType.";
+                            return techniques;
+                        }
                     }
                 }
             }

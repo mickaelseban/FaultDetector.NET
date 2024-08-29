@@ -16,16 +16,13 @@ namespace FaultDetectorDotNet.Extension
     {
         private readonly DataGrid _coverageDataGrid;
         private readonly ObservableCollection<DataGridItem> _gridData;
-        private readonly ObservableCollection<NormalizatedSuspiciousnessItem> _suspiciousnessAggregatedResultItems;
         private readonly ObservableCollection<SuspiciousnessItem> _suspiciousnessResultItems;
 
         public ExtensionReporter(ObservableCollection<SuspiciousnessItem> suspiciousnessResultItems,
-            ObservableCollection<NormalizatedSuspiciousnessItem> suspiciousnessAggregatedResultItems,
             ObservableCollection<DataGridItem> gridData,
             DataGrid coverageDataGrid)
         {
             _suspiciousnessResultItems = suspiciousnessResultItems;
-            _suspiciousnessAggregatedResultItems = suspiciousnessAggregatedResultItems;
             _gridData = gridData;
             _coverageDataGrid = coverageDataGrid;
         }
@@ -35,7 +32,6 @@ namespace FaultDetectorDotNet.Extension
             Application.Current.Dispatcher.Invoke(() =>
             {
                 LoadSuspiciousnessResult(_suspiciousnessResultItems, result.SuspiciousnessResult);
-                LoadSuspiciousnessAggregatedResult(_suspiciousnessAggregatedResultItems, result.NormalizatedSuspiciousness);
                 LoadTestCoverageMatrix(_gridData, _coverageDataGrid, result.TestCoverageMatrix);
             });
         }
@@ -43,39 +39,6 @@ namespace FaultDetectorDotNet.Extension
         public bool CanWrite()
         {
             return true;
-        }
-
-        private static List<NormalizatedSuspiciousnessItem> ConvertToSuspiciousnessAggregatedResultItems(
-            NormalizatedSuspiciousness result)
-        {
-            var items = new List<NormalizatedSuspiciousnessItem>();
-
-            foreach (var assemblyEntry in result.Assemblies)
-            {
-                foreach (var fileEntry in assemblyEntry.Value.Files)
-                {
-                    foreach (var classEntry in fileEntry.Value.Classes)
-                    {
-                        foreach (var methodEntry in classEntry.Value.Methods)
-                        {
-                            foreach (var lineEntry in methodEntry.Value.Lines)
-                            {
-                                items.Add(new NormalizatedSuspiciousnessItem
-                                {
-                                    Assembly = assemblyEntry.Key,
-                                    File = fileEntry.Key,
-                                    Class = classEntry.Key,
-                                    Method = methodEntry.Key.Split(new[] { "::" }, StringSplitOptions.None).Last(),
-                                    Line = lineEntry.Key,
-                                    Score = lineEntry.Value.Score
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-
-            return items;
         }
 
         private static List<SuspiciousnessItem> ConvertToSuspiciousnessResultItems(SuspiciousnessResult result)
@@ -96,8 +59,7 @@ namespace FaultDetectorDotNet.Extension
                                 {
                                     items.Add(new SuspiciousnessItem
                                     {
-                                        Technique = techniqueEntry.Key.Item1.ToString(),
-                                        AdjustableSymmetryCoefficient = techniqueEntry.Key.Item2.ToString(),
+                                        Technique = techniqueEntry.Key.ToString(),
                                         Assembly = assemblyEntry.Key,
                                         File = fileEntry.Key,
                                         Class = classEntry.Key,
@@ -113,23 +75,6 @@ namespace FaultDetectorDotNet.Extension
             }
 
             return items;
-        }
-
-        private static void LoadSuspiciousnessAggregatedResult(
-            ObservableCollection<NormalizatedSuspiciousnessItem> suspiciousnessAggregatedResultItems,
-            NormalizatedSuspiciousness normalizatedSuspiciousness)
-        {
-            suspiciousnessAggregatedResultItems.Clear();
-
-            if (normalizatedSuspiciousness is null)
-            {
-                return;
-            }
-
-            foreach (var item in ConvertToSuspiciousnessAggregatedResultItems(normalizatedSuspiciousness))
-            {
-                suspiciousnessAggregatedResultItems.Add(item);
-            }
         }
 
         private static void LoadSuspiciousnessResult(ObservableCollection<SuspiciousnessItem> suspiciousnessResultItems,

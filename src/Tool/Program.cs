@@ -31,13 +31,6 @@ namespace FaultDetectorDotNet.Tool
                 getDefaultValue: () => false
             );
 
-            var normalizatedTechniqueOption = new Option<bool>(
-                new[] { "--normalizated", "-n" },
-                description: "Enable Normalizated Suspiciousness Technique",
-                getDefaultValue: () => false
-            );
-
-            var symmetryCoefficientsOption = new SymmetryCoefficientsOption();
             var testProjectFullPathArgument = new TestProjectFullPathArgument();
             var techniquesOption = new TechniquesOption();
             var exportPathOption = new ExportPathOption();
@@ -48,8 +41,6 @@ namespace FaultDetectorDotNet.Tool
                 verboseOption,
                 debugOption,
                 techniquesOption,
-                symmetryCoefficientsOption,
-                normalizatedTechniqueOption, 
                 splitSuspiciousnessResultsOption
             };
 
@@ -58,8 +49,6 @@ namespace FaultDetectorDotNet.Tool
                     verbose,
                     debugMode,
                     techniques,
-                    symmetryCoefficients,
-                    normalizatedTechnique,
                     splitSuspiciousnessResults) =>
                 {
                     if (debugMode)
@@ -71,9 +60,7 @@ namespace FaultDetectorDotNet.Tool
                     using var processLogger = new ConsoleOutputLogger(verbose);
                     var parameters = new SuspiciousnessServiceParameters(executionId, 
                         testProjectFullPath,
-                        symmetryCoefficients,
-                        techniques, 
-                        normalizatedTechnique);
+                        techniques);
                     
                     var consoleReporter = new ConsoleReporter(processLogger, splitSuspiciousnessResults);
                     var textReporter = new TextReporter( executionId, exportPath, processLogger, splitSuspiciousnessResults);
@@ -91,8 +78,6 @@ namespace FaultDetectorDotNet.Tool
                 verboseOption,
                 debugOption,
                 techniquesOption,
-                symmetryCoefficientsOption,
-                normalizatedTechniqueOption, 
                 splitSuspiciousnessResultsOption);
 
             return await rootCommand.InvokeAsync(args);
