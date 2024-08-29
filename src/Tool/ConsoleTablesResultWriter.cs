@@ -28,14 +28,14 @@ namespace FaultDetectorDotNet.Tool
 
             var options = new ConsoleTableOptions
             {
-                Columns = new List<string> { "Technique, Coefficient", "Class", "Method", "Line", "Score" },
+                Columns = new List<string> { "Technique", "Class", "Method", "Line", "Score" },
                 OutputTo = textWriter,
                 EnableCount = false
             };
 
             var table = SuspiciousnessTable(result);
 
-            textWriter.WriteLine("# Suspiciousness ####################");
+            textWriter.WriteLine("# Suspiciousness");
             var consoleTable = new ConsoleTable(options);
 
             foreach (var row in table)
@@ -64,7 +64,7 @@ namespace FaultDetectorDotNet.Tool
 
             foreach (var tableInfo in tablesInfo)
             {
-                textWriter.WriteLine($"# Suspiciousness - {tableInfo.Name} ####################");
+                textWriter.WriteLine($"# Suspiciousness - {tableInfo.Name} ");
                 var consoleTable = new ConsoleTable(options);
 
                 foreach (var row in tableInfo.Table)

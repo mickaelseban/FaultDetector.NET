@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
-using Microsoft.Build.Framework;
 using Microsoft.Build.Locator;
-using Microsoft.Build.Logging;
 
 namespace FaultDetectorDotNet.Tool
 {
@@ -22,10 +20,7 @@ namespace FaultDetectorDotNet.Tool
             try
             {
                 var projectCollection = new ProjectCollection();
-                var buildParameters = new BuildParameters(projectCollection)
-                {
-                    Loggers = new List<ILogger> { new ConsoleLogger(LoggerVerbosity.Minimal) }
-                };
+                var buildParameters = new BuildParameters(projectCollection);
 
                 var buildRequest = new BuildRequestData(projectFilePath, new Dictionary<string, string>(), null,
                     new[] { "Build" }, null);
