@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="FaultDetectorDotNet.39d194c5-47cd-4b1a-94a1-1c0042042e86" Version="1.1" Language="en-US" Publisher="Mickael Seban" />
+        <Identity Id="FaultDetectorDotNet.39d194c5-47cd-4b1a-94a1-1c0042042e86" Version="1.2" Language="en-US" Publisher="Mickael Seban" />
         <DisplayName>FaultDetectorDotNet</DisplayName>
         <Description xml:space="preserve">FaultDetectorDotNet</Description>
     </Metadata>
