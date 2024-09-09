@@ -47,44 +47,16 @@ namespace FaultDetectorDotNet.Core.Techniques
 
         private static void RemoveLowScoreOutliers(SuspiciousnessResult.Technique result, double calculatedPercentil)
         {
-            foreach (var assembly in result.Assemblies.Values.ToList())
+            foreach (var lineKv 
+                     in from assembly in result.Assemblies.Values 
+                     from file in assembly.Files.Values 
+                     from clazz in file.Classes.Values 
+                     from method in clazz.Methods.Values 
+                     from lineKV in method.Lines 
+                     where lineKV.Value.Score < calculatedPercentil 
+                     select lineKV)
             {
-                foreach (var file in assembly.Files.Values.ToList())
-                {
-                    foreach (var clazz in file.Classes.Values.ToList())
-                    {
-                        foreach (var method in clazz.Methods.Values.ToList())
-                        {
-                            var linesToRemove = method.Lines.Values.Where(line => line.Score < calculatedPercentil)
-                                .Select(line => line.Number).ToList();
-
-                            foreach (var lineNumber in linesToRemove)
-                            {
-                                method.Lines.Remove(lineNumber);
-                            }
-
-                            if (method.Lines.Count == 0)
-                            {
-                                clazz.Methods.Remove(method.Signature);
-                            }
-                        }
-
-                        if (clazz.Methods.Count == 0)
-                        {
-                            file.Classes.Remove(clazz.Name);
-                        }
-                    }
-
-                    if (file.Classes.Count == 0)
-                    {
-                        assembly.Files.Remove(file.SourcePath);
-                    }
-                }
-
-                if (assembly.Files.Count == 0)
-                {
-                    result.Assemblies.Remove(assembly.Name);
-                }
+                lineKv.Value.Score = 0;
             }
         }
 

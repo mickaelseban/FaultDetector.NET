@@ -14,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using EnvDTE;
 using EnvDTE80;
+using FaultDetectorDotNet.Core;
 using FaultDetectorDotNet.Core.Logger;
 using FaultDetectorDotNet.Core.Suspiciousness;
 using Microsoft;
@@ -266,6 +267,7 @@ namespace FaultDetectorDotNet.Extension
             var reporter = new ExtensionReporter(SuspiciousnessResultItems,
                 GridData,
                 CoverageDataGrid);
+            
             var reportManager = new ReportManager(reporter);
 
             using (var cts = new CancellationTokenSource())

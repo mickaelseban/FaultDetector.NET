@@ -64,7 +64,8 @@ namespace FaultDetectorDotNet.Tool
                     
                     var consoleReporter = new ConsoleReporter(processLogger, splitSuspiciousnessResults);
                     var textReporter = new TextReporter( executionId, exportPath, processLogger, splitSuspiciousnessResults);
-                    var reportManager = new ReportManager(consoleReporter, textReporter);
+                    var jsonReporter = new JsonReporter(executionId, exportPath, processLogger);
+                    var reportManager = new ReportManager(consoleReporter, textReporter, jsonReporter);
 
                     await new SpectrumBasedFaultLocalizationRunner()
                     .Run(processLogger,

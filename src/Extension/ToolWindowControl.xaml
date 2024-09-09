@@ -246,8 +246,6 @@
                         </DataGrid.Resources>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Technique" Binding="{Binding Technique}" Width="150" />
-                            <DataGridTextColumn Header="Symmetry Coefficient"
-                                                Binding="{Binding AdjustableSymmetryCoefficient}" Width="200" />
                             <DataGridTextColumn Header="Assembly" Binding="{Binding Assembly}" Width="100" />
                             <DataGridTextColumn Header="File" Binding="{Binding File}" Width="200" />
                             <DataGridTextColumn Header="Class" Binding="{Binding Class}" Width="150" />
