@@ -53,7 +53,7 @@ namespace FaultDetectorDotNet.Core.Coverage
                             {
                                 foreach (var line in method.Lines.Values)
                                 {
-                                    var isLineIgnored = CodeReaderHelper.ShouldLineBeIgnored(CodeReaderHelper.ReadLine(file.SourcePath, line.Number));
+                                    var isLineIgnored = CodeReaderHelper.ShouldLineBeIgnored(file.SourcePath, line.Number);
 
                                     if (!isLineIgnored)
                                     {

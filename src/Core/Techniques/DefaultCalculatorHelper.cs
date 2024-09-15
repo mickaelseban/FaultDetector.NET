@@ -61,8 +61,7 @@ namespace FaultDetectorDotNet.Core.Techniques
                         new SuspiciousnessResult.Method { Signature = methodName };
                 }
 
-                var isLineIgnored =
-                    CodeReaderHelper.ShouldLineBeIgnored(CodeReaderHelper.ReadLine(fileName, lineNumber));
+                var isLineIgnored = CodeReaderHelper.ShouldLineBeIgnored(fileName, lineNumber);
 
                 if (!isLineIgnored)
                 {

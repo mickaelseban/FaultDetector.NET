@@ -28,13 +28,8 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
 
             foreach (var requestTechnique in parameters.Techniques)
             {
-
                 var techniqueResult = Techniques
-                    .Single(techniqueCalculator =>
-                    {
-                        var s = techniqueCalculator.Type.Equals(requestTechnique);
-                        return s;
-                    })
+                    .Single(techniqueCalculator => techniqueCalculator.Type.Equals(requestTechnique))
                     .Calculate(coverageAggregated);
 
                 result.Techniques[requestTechnique] = techniqueResult;

@@ -232,7 +232,7 @@ namespace FaultDetectorDotNet.Core.Suspiciousness
             var processInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = $"dotnet test {TestProjectFullPath} --list-tests",
+                Arguments = $"dotnet test {TestProjectFullPath} --list-tests --no-build",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,

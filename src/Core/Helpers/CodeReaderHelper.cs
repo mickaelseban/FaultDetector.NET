@@ -5,6 +5,11 @@ namespace FaultDetectorDotNet.Core.Helpers
 {
     public static class CodeReaderHelper
     {
+        public static bool ShouldLineBeIgnored(string filePath, int lineToRead)
+        {
+            return ShouldLineBeIgnored(ReadLine(filePath, lineToRead));
+        }
+
         public static bool ShouldLineBeIgnored(string line)
         {
             var content = line.Trim();
