@@ -24,17 +24,15 @@
 3. **Choose Fault Localization Techniques**: You can choose from various fault localization techniques, including Tarantula, Ochiai, Jaccard, Seban Normalization, and more. Simply check the box next to the desired technique and click "Run."
 4. **View Suspiciousness Scores**: Once the analysis is complete, a list of suspicious code lines will appear. These lines are ranked according to their likelihood of being faulty, based on the technique selected.
 
-   ![View Suspiciousness Results](./docs/img/results.gif)
-   ![Select Technique](./docs/img/show_all_results.gif)
-   ![View Suspiciousness Results](./docs/img/search.gif)
-   ![Navigate to Source Code Line](./docs/img/show_code_line.gif)
+   ![View Suspiciousness Results](./img/results.gif)
+   ![Select Technique](./img/show_all_results.gif)
+   ![View Suspiciousness Results](./img/search.gif)
+   ![Navigate to Source Code Line](./img/show_code_line.gif)
 
 5. **Examine the Coverage Matrix**: Switch to the "Coverage Matrix" tab to see a visual representation of how each line of code was covered during test executions. This matrix helps you understand which tests executed specific lines of code.
 
-   ![Coverage Matrix](./docs/img/tooltip.gif)
+   ![Coverage Matrix](./img/tooltip.gif)
 
 6. **Output Logs**: The tool also provides detailed output logs, which can help you analyze how the tests were executed and locate any issues with the testing process.
 
-   ![Output Logs](./docs/img/clear_log.gif)
-   ![View Suspiciousness Results](./docs/img/install_cli.gif)
-   ![View Suspiciousness Results](./docs/img/cli_results.gif)
+   ![Output Logs](./img/clear_log.gif)
