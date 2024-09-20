@@ -1,15 +1,23 @@
-# FaultDetector.NET - Visual Studio Add-in
-
-**FaultDetector.NET** is an automated fault localization tool designed for C# projects, integrated directly into Visual Studio 2022. This add-in helps developers identify potential fault locations in their code by analyzing test results and generating a ranking of suspicious code lines.
-
-
-### Key Features:
-- **Seamless Visual Studio Integration**: Fully integrated into Visual Studio 2022, allowing developers to interact directly within their familiar environment.
-- **Multiple Fault Localization Techniques**: Supports a wide variety of spectrum-based fault localization techniques.
-- **Coverage Matrix Visualization**: Displays a detailed matrix that highlights the coverage of each line of code during test execution.
-- **Suspiciousness Ranking**: The tool provides a ranked list of the most suspicious lines of code based on the selected fault localization technique, helping to quickly pinpoint potential bugs.
-
-
+# FaultDetector.NET
+ 
+**FaultDetector.NET** is an automated fault localization tool specifically designed for C# projects. It helps developers identify potential fault locations in their code by analyzing test results and generating a ranking of suspicious code lines based on various fault localization techniques.
+ 
+The tool comes in two versions:
+- A **Visual Studio Add-in**, for seamless integration into the Visual Studio IDE.
+- A **Command-Line Interface (CLI)**, for integration into CI/CD pipelines or for use from the terminal.
+ 
+## Key Features
+- **Multiple Fault Localization Techniques**: Supports a variety of spectrum-based fault localization techniques such as Tarantula, Ochiai, Jaccard, and Seban Normalization.
+- **Test Coverage Visualization**: Displays a detailed coverage matrix to show which lines of code are exercised by tests.
+- **Ranking of Suspicious Lines**: Provides a ranked list of suspicious lines of code to help you locate the fault more quickly.
+- **Support for C# Projects**: Tailored for C# developers, with special focus on integration within the Visual Studio environment.
+ 
+---
+ 
+## FaultDetector.NET Add-in
+ 
+The **Visual Studio Add-in** allows developers to interact directly with FaultDetector.NET within their IDE. This version is particularly useful for developers who prefer a graphical interface and want real-time fault localization integrated into their development workflow.
+ 
 ### Installation
 
 1. Open Visual Studio 2022.
@@ -36,5 +44,25 @@
 6. **Output Logs**: The tool also provides detailed output logs, which can help you analyze how the tests were executed and locate any issues with the testing process.
 
    ![Output Logs](./docs/img/clear_log.gif)
-   ![View Suspiciousness Results](./docs/img/install_cli.gif)
-   ![View Suspiciousness Results](./docs/img/cli_results.gif)
+
+---
+ 
+## FaultDetector.NET CLI
+ 
+The **Command-Line Interface (CLI)** version of FaultDetector.NET is designed for use in CI/CD pipelines or for developers who prefer using the terminal. It is especially useful for automated testing environments where the tool can be integrated into the build process.
+ 
+### Installation
+ 
+1. **Install the CLI version via NuGet**:
+   ```
+   dotnet tool install --global FaultDetector.CLI
+   ```
+   ![CLI Installation](./docs/img/install_cli.gif)
+
+### Usage
+
+1. **Run Analysis with CLI**:
+   ```
+   faultdetector "C:\DefectsSampleProject\MaxFloatProject.Tests\MaxFloatProject.Tests.csproj" -e "C:\results" -t 1,2,3,4,6 -ssr
+   ```
+   ![CLI Results](./docs/img/cli_results.gif)
